@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>選抜シミュレータ</title>
+</head>
+<body>
+    <h1>坂道選抜シュミレータ</h1>
+    <div>
+      <button id="createActiveSelection">生成(現役)</button>
+      <p id="showResult"></p>
+    </div>
+    <script>
+      const first = ['賀喜','丹生','守屋麗','弓木','菅原']
+      const second = ['山下','飛鳥','与田','久保','河田','小坂','井上和','田村','早川','小川']
+      const third = ['梅澤','一ノ瀬','筒井','林','松尾','金川']
+
+      const btn = document.querySelector('#createActiveSelection')
+      const result = document.querySelector('#showResult')
+      btn.addEventListener('click',createActiveSelection)
+
+      // 現役選抜生成
+      function createActiveSelection(){
+        arrayShuffle(first)
+        // 2列目で残った人は3列目にマージ
+        arrayShuffle(second)
+        const secondMember = second.slice(0,5)
+        const secondRemain = second.slice(5,second.length)
+        const thirdMember = [...third,...secondRemain]
+        arrayShuffle(thirdMember)
+        // 結果出力
+        result.innerText = `3列目 : ${thirdMember.slice(0,6).join('  ')}
+        2列目 : ${secondMember.join('  ')}
+        1列目 : ${first.join('  ')}`
+      }
+
+      // 配列のシャッフル
+      function arrayShuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+          let j = Math.floor(Math.random() * (i + 1));
+          [array[i], array[j]] = [array[j], array[i]];
+        }
+      }
+
+      // min以上max未満の乱数取得
+      function getRandomInt(min,max){
+        min = Math.ceil(min)
+        max = Math.ceil(max)
+        return Math.floor(Math.random() * (max - min) + min)
+      }
+    </script>
+</body>
+</html>
